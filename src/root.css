@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slide-fade-enter-active,
+.slide-fade-exit-active {
+	transition: opacity 1s, transform 1s;
+}
+.slide-fade-enter,
+.slide-fade-exit-to {
+	transform: translateX(200px);
+	opacity: 0;
+}
+.slide-fade-enter {
+	transform: translateX(-200px);
+}
