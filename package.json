@@ -17,8 +17,11 @@
   "dependencies": {
     "@solidjs/meta": "^0.28.6",
     "@solidjs/router": "^0.8.3",
+    "@tanstack/solid-query": "^5.4.3",
+    "@tanstack/solid-query-devtools": "^5.4.3",
     "solid-js": "^1.8.3",
     "solid-start": "^0.3.8",
+    "solid-start-vercel": "^0.3.9",
     "solid-transition-group": "^0.2.3"
   },
   "engines": {
