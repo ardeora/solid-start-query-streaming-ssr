@@ -1,7 +1,7 @@
-// export const API_URL =
-//   "https://streaming-data-server-production.up.railway.app";
+export const API_URL =
+  "https://streaming-data-server-production.up.railway.app";
 
-export const API_URL = "http://localhost:3006";
+// export const API_URL = "http://localhost:3006";
 
 export const shoe_sizes = [
   "5",
