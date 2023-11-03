@@ -382,14 +382,16 @@ const Review = (props: { review: Comment }) => {
       </div>
       <div class="flex flex-col">
         <p class="font-semibold leading-snug">{props.review.name}</p>
-        <p class="leading-none text-gray-500">
+        <p class="leading-none pt-0.5 text-gray-500">
           {new Date(props.review.created_at).toDateString()}
         </p>
-        <div class="pt-2">
+        <div class="pt-3">
           <p class="font-medium leading-snug text-gray-600">
             {props.review.title}
           </p>
-          <p class="text-gray-600">{props.review.description}</p>
+          <p class="text-gray-600 leading-snug pt-0.5">
+            {props.review.description}
+          </p>
         </div>
       </div>
     </div>
