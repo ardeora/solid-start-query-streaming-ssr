@@ -1,6 +1,14 @@
 import { Key } from "@solid-primitives/keyed";
 import { createQuery } from "@tanstack/solid-query";
-import { For, Show, Suspense, createMemo, createResource } from "solid-js";
+import {
+  For,
+  Show,
+  Suspense,
+  createEffect,
+  createMemo,
+  createResource,
+  createSignal,
+} from "solid-js";
 import { isServer } from "solid-js/web";
 import { A, useParams } from "solid-start";
 import server$ from "solid-start/server";
@@ -20,6 +28,14 @@ const getRecommendedPicks = server$(async (id: string) => {
 const getReviews = server$(async (id: string) => {
   const res = await fetch(`${API_URL}/products/comments/${id}`);
   return res.json() as Promise<Comment[]>;
+});
+
+const getAvailableSizes = server$(async (id: string) => {
+  const res = await fetch(`${API_URL}/products/sizes/${id}`);
+  return res.json() as Promise<{
+    total: string[];
+    available: string[];
+  }>;
 });
 
 export default function ProductDetails() {
@@ -112,9 +128,10 @@ const Info = () => {
   }));
 
   return (
-    <Suspense>
-      <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col">
+      <Suspense>
         <h1 class="font-bold text-2xl">{product.data?.name}</h1>
+
         <Show when={product.data?.price} keyed>
           {(price) => <DisplayPrice price={price} />}
         </Show>
@@ -126,14 +143,74 @@ const Info = () => {
         <p class="leading-tight text-gray-600 pt-2">
           {product.data?.description}
         </p>
+      </Suspense>
 
-        <div class="flex-1 flex-col flex justify-end">
-          <button class="bg-orange-500 hover:bg-orange-600 rounded text-white font-semibold py-2">
-            Add To Cart
-          </button>
-        </div>
+      <div class="flex-1 flex-col flex justify-end gap-4">
+        <Sizes />
+        <button class="bg-orange-500 hover:bg-orange-600 rounded text-white font-semibold py-2">
+          Add To Cart
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const Sizes = () => {
+  const params = useParams();
+
+  const sizes = createQuery(() => ({
+    queryKey: ["sizes", params.id],
+    queryFn: () => getAvailableSizes(params.id),
+  }));
+
+  const [selectedSize, setSelectedSize] = createSignal<string | undefined>();
+
+  createEffect(() => {
+    const id = params.id;
+    setSelectedSize(undefined);
+  });
+
+  return (
+    <Suspense fallback={<PlaceholderSizes />}>
+      <div class="grid grid-cols-5 gap-2">
+        <For each={sizes.data?.total}>
+          {(size) => (
+            <button
+              class={`bg-gray-100 h-10 hover:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-100 border border-gray-300 rounded disabled:opacity-40 ${
+                size === selectedSize() && "border-orange-600 border-2"
+              }`}
+              onClick={() => setSelectedSize(size)}
+              disabled={!sizes.data!.available.includes(size)}
+            >
+              {size}
+            </button>
+          )}
+        </For>
       </div>
     </Suspense>
+  );
+};
+
+const PlaceholderSizes = () => {
+  const placeholderSizes = Array.from({ length: 10 }).map((_, i) => i);
+
+  return (
+    <div class="grid grid-cols-5 gap-2 relative">
+      <div class="absolute top-0 left-0 border-2 rounded-se-none border-orange-600 w-[calc(100%_+_1rem)] h-[calc(100%_+_1rem)] -translate-x-2 -translate-y-2 rounded">
+        <div class="absolute px-3 text-sm top-0 right-0 -translate-y-full bg-orange-600 font-medium py-0.5 translate-x-[1px] text-white rounded-t">
+          {isServer ? "Streaming Data" : "Client Loading"}
+        </div>
+      </div>
+      <For each={placeholderSizes}>
+        {(size) => (
+          <button
+            class={`bg-gray-200 animate-pulse text-transparent h-10 hover:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-100 border border-gray-300 rounded disabled:opacity-40`}
+          >
+            {size}
+          </button>
+        )}
+      </For>
+    </div>
   );
 };
 

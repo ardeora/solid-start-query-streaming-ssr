@@ -10,7 +10,7 @@ export default function Product() {
         </div>
         <div>
           <a
-            href="https://github.com/ardeora"
+            href="https://github.com/ardeora/solid-start-query-streaming-ssr"
             class="rounded-full block h-9 w-9 border-green-400 border-2"
           >
             <img
