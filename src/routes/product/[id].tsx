@@ -146,7 +146,9 @@ const Info = () => {
       </Suspense>
 
       <div class="flex-1 flex-col flex justify-end gap-4">
-        <Sizes />
+        <Suspense fallback={<PlaceholderSizes />}>
+          <Sizes />
+        </Suspense>
         <button class="bg-orange-500 hover:bg-orange-600 rounded text-white font-semibold py-2">
           Add To Cart
         </button>
@@ -171,23 +173,21 @@ const Sizes = () => {
   });
 
   return (
-    <Suspense fallback={<PlaceholderSizes />}>
-      <div class="grid grid-cols-5 gap-2">
-        <For each={sizes.data?.total}>
-          {(size) => (
-            <button
-              class={`bg-gray-100 h-10 hover:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-100 border border-gray-300 rounded disabled:opacity-40 ${
-                size === selectedSize() && "border-orange-600 border-2"
-              }`}
-              onClick={() => setSelectedSize(size)}
-              disabled={!sizes.data!.available.includes(size)}
-            >
-              {size}
-            </button>
-          )}
-        </For>
-      </div>
-    </Suspense>
+    <div class="grid grid-cols-5 gap-2">
+      <For each={sizes.data?.total}>
+        {(size) => (
+          <button
+            class={`bg-gray-100 h-10 hover:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-100 border border-gray-300 rounded disabled:opacity-40 ${
+              size === selectedSize() && "border-orange-600 border-2"
+            }`}
+            onClick={() => setSelectedSize(size)}
+            disabled={!sizes.data!.available.includes(size)}
+          >
+            {size}
+          </button>
+        )}
+      </For>
+    </div>
   );
 };
 

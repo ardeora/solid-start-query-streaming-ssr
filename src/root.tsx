@@ -32,7 +32,7 @@ export default function Root() {
       <Body class="bg-gray-1100 overflow-y-scroll bg-[url('/grid.svg')] pb-36">
         <ErrorBoundary>
           <QueryClientProvider client={client}>
-            <SolidQueryDevtools />
+            {/* <SolidQueryDevtools /> */}
             <AppShell>
               <Routes>
                 <FileRoutes />
