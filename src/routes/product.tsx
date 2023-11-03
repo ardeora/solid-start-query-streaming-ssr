@@ -4,7 +4,7 @@ import { NikeLogo } from "~/components/icons";
 export default function Product() {
   return (
     <div class="text-gray-700 flex flex-col p-4 gap-4">
-      <header class="h-12 border bg-gray-50 rounded flex pl-4 pr-2 items-center justify-between">
+      <header class="h-12 border bg-gray-50 rounded flex pl-3 pr-1 items-center justify-between">
         <div class="text-orange-600 rounded-full flex items-center justify-center">
           <NikeLogo />
         </div>

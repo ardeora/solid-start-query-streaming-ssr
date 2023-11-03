@@ -32,3 +32,12 @@ export interface RecommendedPick {
   __v: number;
   delivery_date: Date;
 }
+
+export interface Comment {
+  product_id: number;
+  name: string;
+  description: string;
+  title: string;
+  rating: number;
+  created_at: Date;
+}
