@@ -125,6 +125,7 @@ const Info = () => {
     queryKey: ["product", params.id],
     queryFn: () => getProduct(params.id),
     placeholderData: (d) => d,
+    deferStream: true,
   }));
 
   return (
